@@ -1,11 +1,31 @@
 # -*- coding: utf-8 -*-
 
+
+import textwrap
+import itertools as it
+
+
 import numpy as np
 import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.patches as mpatches
+
+
+def color_pallet(n):
+    """construct a color pallet"""
+    if(n > 12):
+        colors_base = plt.cm.tab20c((np.arange(20)).astype(int))
+    else:
+        colors_base = plt.cm.Paired((np.arange(12)).astype(int))
+    colors = [x[1] for x in zip(np.arange(n), it.cycle(colors_base))]
+    return(colors)
+
+
+def color_pallet_with_gray(n):
+    """construct a color pallet with gray at the end"""
+    return(np.vstack([color_pallet(n - 1), np.array([0, 0, 0, .5])]))
 
 
 def plot_scatter(plot_d, ignore = None, save=None):

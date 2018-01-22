@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 name='yt_misc_py'
-version='0.01'
+version='0.0.1'
 short_description="Yosuke's misc codes (Python)"
 
 ########
