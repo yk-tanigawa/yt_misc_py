@@ -106,6 +106,7 @@ def plot(plot_d, ignore = None, save=None):
 
 def plot_ax_stacked_bar(
     ax, y, label = None, title = None, xlabel = None, ylabel = None,
+    color = None, hatch = None,
     bar_width = 1, show_legend=False, 
     show_xticklabels = False, show_yticklabels = False,
 ):
@@ -127,9 +128,22 @@ def plot_ax_stacked_bar(
     data_len = len(y)
     bottom = np.append(np.zeros(1), np.cumsum(y)[:-1])
     p = [None] * data_len
-    colors = color_pallet_with_gray(data_len)
+    if color is None:
+        colors = color_pallet_with_gray(data_len)
+    else:
+        colors = color
+    if hatch is None:
+        hatches = [''] * len(colors)
+    else:
+        hatches = hatch
     for i in range(data_len):
-        p[i] = ax.bar(0, y[i], bottom=bottom[i], width=(2 * bar_width), color=colors[i])
+        p[i] = ax.bar(
+            0, y[i], 
+            bottom=bottom[i], 
+            width=(2 * bar_width), 
+            color=colors[i],
+            hatch=hatches[i]
+        )
     ax.set_xlim((0, 1))
     ax.set_ylim((0, 1))
     if(show_legend and label is not None):
