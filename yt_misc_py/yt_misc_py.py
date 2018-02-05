@@ -33,7 +33,10 @@ def plot_scatter(plot_d, ignore = None, save=None):
     fig = plt.figure(figsize=(6,6))
     gs = gridspec.GridSpec(1, 1)
     fig_axs = [fig.add_subplot(sp) for sp in gs]
-    fig_axs[0].scatter(plot_d['x'], plot_d['y'])
+    if 'color' in plot_d:
+        fig_axs[0].scatter(plot_d['x'], plot_d['y'], color=plot_d['color'])
+    else:
+        fig_axs[0].scatter(plot_d['x'], plot_d['y'])
     if ignore is None:
         ignore = set([])
     if(('title' in plot_d) and ('title' not in ignore)):
