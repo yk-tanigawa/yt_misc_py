@@ -174,3 +174,23 @@ def plot_ax_stacked_bar(
     if(ylabel is not None):
         ax.set_ylabel(ylabel)        
     return ax
+
+
+def plot_legends(colors, labels, save=None):
+    fig = plt.figure(figsize=(6,6))
+    gs = gridspec.GridSpec(1, 1)
+    fig_axs = [fig.add_subplot(sp) for sp in gs]
+    legends = [
+        fig_axs[0].bar(
+            0, 1, bottom=trace_idx, 
+            color=colors[trace_idx]
+        )    
+        for trace_idx in np.arange(len(labels))
+    ]
+    fig_axs[0].legend(
+        labels, bbox_to_anchor=(1, 1)
+    )    
+    if save is not None:
+        fig.savefig(save, bbox_inches="tight", pad_inches=0.0)    
+
+
