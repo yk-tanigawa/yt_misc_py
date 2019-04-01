@@ -112,6 +112,7 @@ def plot_ax_stacked_bar(
     color = None, hatch = None,
     bar_width = 1, show_legend=False, 
     show_xticklabels = False, show_yticklabels = False,
+    legend_order_rev = False,
 ):
     '''
     Given an Axes class object, plot a stacked bar plot on that object
@@ -150,11 +151,18 @@ def plot_ax_stacked_bar(
     ax.set_xlim((0, 1))
     ax.set_ylim((0, 1))
     if(show_legend and label is not None):
-        ax.legend(
-            (p[i] for i in range(data_len)),
-            tuple(label),
-            bbox_to_anchor=(1, 1)
-        )
+        if(legend_order_rev):
+            ax.legend(
+                (p[data_len - 1 - i] for i in range(data_len)),
+                tuple(reversed(label)),
+                bbox_to_anchor=(1, 1)
+            )
+        else:
+            ax.legend(
+                (p[i] for i in range(data_len)),
+                tuple(label),
+                bbox_to_anchor=(1, 1)
+            )
     if(not show_xticklabels):            
         ax.set_xticklabels([]) 
     if(not show_yticklabels):            
@@ -166,3 +174,23 @@ def plot_ax_stacked_bar(
     if(ylabel is not None):
         ax.set_ylabel(ylabel)        
     return ax
+
+
+def plot_legends(colors, labels, save=None):
+    fig = plt.figure(figsize=(6,6))
+    gs = gridspec.GridSpec(1, 1)
+    fig_axs = [fig.add_subplot(sp) for sp in gs]
+    legends = [
+        fig_axs[0].bar(
+            0, 1, bottom=trace_idx, 
+            color=colors[trace_idx]
+        )    
+        for trace_idx in np.arange(len(labels))
+    ]
+    fig_axs[0].legend(
+        labels, bbox_to_anchor=(1, 1)
+    )    
+    if save is not None:
+        fig.savefig(save, bbox_inches="tight", pad_inches=0.0)    
+
+
